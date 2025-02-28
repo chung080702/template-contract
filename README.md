@@ -78,7 +78,7 @@ Run Foundry Tests via Hardhat
 This command runs tests written in Solidity (Foundry style) on a forked network.
 
 ```bash
-npx hardhat forge-test
+npx hardhat forge-test --network localhost
 ```
 (You can specify filters, such as match-path or match-contract, via parameters in your custom task.)
 
@@ -92,12 +92,12 @@ Deploy Contracts
 Deploy your contracts using Hardhat Deploy.
 
 ```bash
-npx hardhat deploy
+npx hardhat deploy --network localhost
 ```
 
 Run a Specific Script
 Execute a specific Hardhat script (e.g., scripts/example.ts).
 
 ```bash
-npx hardhat run scripts/example.ts
+npx hardhat run scripts/example.ts --network localhost
 ```
