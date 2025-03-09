@@ -12,7 +12,7 @@ task("forge-test", "Runs Foundry tests on a forked network")
     .addOptionalParam("matchTest", "Only run test functions matching the specified regex pattern")
     .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
         const chainName = hre.hardhatArguments.network;
-        const envNetwork = fs.readFileSync(`test/env/.env.${chainName}`).toString();
+        const envNetwork = fs.readFileSync(`env/.env.${chainName}`).toString();
         const envNetworkConfig = dotenv.parse(envNetwork);
 
         const env = fs.readFileSync(`.env`).toString();
@@ -31,6 +31,37 @@ task("forge-test", "Runs Foundry tests on a forked network")
         const matchContract = taskArgs["matchContract"] ? "--match-contract " + taskArgs.matchContract : "";
         const matchTest = taskArgs["matchTest"] ? "--match-test " + taskArgs.matchTest : "";
         const command = `forge test --fork-url ${rpcUrl} ${matchPath} ${matchContract} ${matchTest}`;
+
+        console.log(`Executing: ${command}`);
+
+        await new Promise<void>((resolve, reject) => {
+            exec(command, (error, stdout, stderr) => {
+                console.log(stdout);
+                resolve();
+            });
+        });
+    });
+
+task("forge-script", "Runs a Foundry script")
+    .addParam("file", "The script file to run")
+    .setAction(async (taskArgs, hre: HardhatRuntimeEnvironment) => {
+        const chainName = hre.hardhatArguments.network;
+        const envNetwork = fs.readFileSync(`env/.env.${chainName}`).toString();
+        const envNetworkConfig = dotenv.parse(envNetwork);
+
+        const env = fs.readFileSync(`.env`).toString();
+        const envConfig = dotenv.parse(env);
+
+        for (const key in envNetworkConfig) {
+            envConfig[key] = envNetworkConfig[key];
+        }
+
+        const envString = Object.entries(envConfig).map(([key, value]) => `${key}=${value}`).join("\n");
+        fs.writeFileSync(".env", envString);
+
+        const rpcUrl = hre.ethers.provider.connection.url
+
+        const command = `forge script --broadcast --rpc-url ${rpcUrl} ${taskArgs.file}`;
 
         console.log(`Executing: ${command}`);
 

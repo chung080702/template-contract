@@ -40,8 +40,8 @@ Stores deployment artifacts and information about deployed contracts (generated 
 - **lib/** 
 Contains Foundry libraries (e.g., forge-std) used for testing and scripting.
 
-- **foundry-scripts/** 
-Contains scripts (written in TypeScript/JavaScript) for interacting with contracts using Hardhat.
+- **scripts/** 
+Contains scripts for interacting with contracts.
 
 - **test/** 
 Contains Solidity test files written in Foundry style (using ds-test).
@@ -82,6 +82,12 @@ npx hardhat forge-test --network localhost
 ```
 (You can specify filters, such as match-path or match-contract, via parameters in your custom task.)
 
+Run Foundry Script via Hardhat
+This command runs tests written in Solidity (Foundry style).
+
+```bash
+npx hardhat forge-test --network localhost
+```
 List Available Networks
 Show the networks defined in your Hardhat configuration.
 

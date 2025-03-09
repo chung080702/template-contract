@@ -22,3 +22,6 @@ script.*.ts
 # foundry
 /cache_forge
 /out
+/broadcast
+
+/deployments/localhost
